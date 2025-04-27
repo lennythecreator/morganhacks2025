@@ -7,8 +7,8 @@ export default function create() {
   const [activeMode, setActiveMode] = useState('creative');
 
   return (
-    <div className="design-page">
-      
+      <div className="design-page">
+          
       {/* Navbar */}
       <nav className="design-navbar">
         <div className="design-navbar-left">
@@ -35,87 +35,107 @@ export default function create() {
       </div>
 
       {/* Main Content */}
-      <main className={activeMode === 'personalize' ? 'design-main personalize' : 'design-main'}>
+      <main className="design-main">
         
-        {/* Creative Mode */}
-        {activeMode === 'creative' && (
-          <>
-            <div className="left-tools">
-              <button className="tool-btn">👕</button>
-              <button className="tool-btn">✏️</button>
-              <button className="tool-btn">👖</button>
-            </div>
+        {/* CENTER AREA */}
+        <div className="center-area">
+          {/* Creative Mode */}
+          {activeMode === 'creative' && (
+            <>
+              <div className="left-tools">
+                <button className="tool-btn">👕</button>
+                <button className="tool-btn">✏️</button>
+                <button className="tool-btn">👖</button>
+              </div>
 
-            <div className="mannequin">
-              Mannequin / 3D Model Placeholder
-            </div>
+              <div className="mannequin">
+                Mannequin / 3D Model Placeholder
+              </div>
 
-            <div className="bottom-controls">
-              <button>↶</button>
-              <button>↻</button>
-              <button>🔍</button>
-              <button>🔎</button>
+              <div className="bottom-controls">
+                <button>↶</button>
+                <button>↻</button>
+                <button>🔍</button>
+                <button>🔎</button>
+                <button>⟳</button>
+                <button>🎨</button>
+              </div>
+
+            </>
+          )}
+
+          {/* Personalize Mode */}
+          {activeMode === 'personalize' && (
+            <>
+              <div className="upload-box">
+                <div className="upload-icon">⬆️</div>
+                <h3>Upload Inspiration</h3>
+                <p>Drag and drop your inspiration images, sketches, or mood boards</p>
+                <button className="browse-btn">Browse Files</button>
+                <small>Upload designs, colors, or styles you love!</small>
+              </div>
+
+              <div className="bottom-controls">
+                <button>↶</button>
+                <button>↻</button>
+                <button>🔍</button>
+                <button>🔎</button>
+                <button>⟳</button>
+                <button>🎨</button>
+              </div>
+
+            </>
+          )}
+        </div>
+
+        {/* CHAT SIDEBAR (Always visible) */}
+        <aside className="chat-sidebar">
+          <div className="chat-header">
+            <div>
+              <h4>Design Assistant</h4>
+              <span>AI-powered guidance</span>
+            </div>
+            <div className="chat-header-icons">
               <button>⟳</button>
-              <button>🎨</button>
+              <button>⚙️</button>
             </div>
+          </div>
 
-            <div className="right-arrow">
-              ➔
-            </div>
-          </>
-        )}
-
-        {/* Personalize Mode */}
-        {activeMode === 'personalize' && (
-          <>
-            <div className="upload-box">
-              <div className="upload-icon">⬆️</div>
-              <h3>Upload Inspiration</h3>
-              <p>Drag and drop your inspiration images, sketches, or mood boards</p>
-              <button className="browse-btn">Browse Files</button>
-              <small>Upload designs, colors, or styles you love!</small>
-            </div>
-
-            <aside className="chat-assistant">
-              <div className="chat-header">
-                <h4>Design Assistant</h4>
-                <p className="chat-subtitle">AI-powered guidance</p>
+          <div className="chat-body">
+            <div className="assistant-message">
+              <div className="assistant-name">EcoFit Assistant</div>
+              <div className="message-text">
+                Welcome to Personalize Mode! Upload inspiration images or describe your vision, and I'll generate custom sustainable designs for you.
               </div>
-              <div className="chat-messages">
-                <div className="chat-bubble">
-                  <strong>EcoFit Assistant</strong><br />
-                  Welcome to Personalize Mode! Upload inspiration images or describe your vision, and I'll generate custom sustainable designs for you.
-                  <div className="timestamp">02:33 AM</div>
-                </div>
-              </div>
-              <div className="chat-input">
-                <input type="text" placeholder="Ask about your personalized design..." />
-                <button className="send-btn">➤</button>
-              </div>
-              <p className="hint-text">Try: "Generate a sustainable dress inspired by forest patterns"</p>
-            </aside>
-
-            <div className="bottom-controls">
-              <button>↶</button>
-              <button>↻</button>
-              <button>🔍</button>
-              <button>🔎</button>
-              <button>⟳</button>
-              <button>🎨</button>
+              <div className="timestamp">02:33 AM</div>
             </div>
+          </div>
 
-            <div className="right-arrow">
-              ➔
-            </div>
-          </>
-        )}
+          <div className="chat-input-area">
+            <textarea
+              placeholder="Ask about your personalized design..."
+              rows={1}
+              className="chat-textarea"
+              onInput={(e) => {
+                e.currentTarget.style.height = 'auto';  // Reset the height
+                e.currentTarget.style.height = `${e.currentTarget.scrollHeight}px`; // Set it to the scroll height
+              }}
+            />
+            <button className="send-btn">➤</button>
+          </div>
+
+          <div className="chat-hint">
+            Try: "Generate a sustainable dress inspired by forest patterns"
+          </div>
+        </aside>
 
       </main>
 
-      {/* Footer Tag */}
+      {/* Footer */}
       <footer className="footer-tag">
         🌿 Sustainable choices. Stunning creations.
       </footer>
     </div>
+
   );
 }

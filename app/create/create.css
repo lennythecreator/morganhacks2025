@@ -79,7 +79,7 @@ body, html {
   
   /* Eco badge */
   .eco-badge {
-    position: absolute;
+
     top: 5rem;
     right: 2rem;
     background: #d1fae5;
@@ -92,13 +92,20 @@ body, html {
   
   /* Main */
   .design-main {
-    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 2rem;
+    min-height: calc(100vh - 120px);
+  }
+
+  .center-area {
+    flex: 1;
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: calc(100vh - 120px);
-    padding: 2rem;
+    position: relative;
   }
+  
   
   /* Left Tools */
   .left-tools {
@@ -177,18 +184,24 @@ body, html {
   /* Personalize Mode */
   .design-main.personalize {
     background: #fff7ed;
+    display: flex;
     justify-content: space-between;
+    align-items: flex-start;
     padding: 2rem 4rem;
+    gap: 2rem;
   }
   
-  .upload-box {
+  /* Upload box (left side) */
+.upload-box {
+    flex: 1;
     background: white;
     border: 2px dashed #d1d5db;
     border-radius: 1rem;
     padding: 3rem;
     text-align: center;
-    max-width: 500px;
+    max-width: 600px;
     width: 100%;
+    min-height: 400px;
   }
   
   .upload-icon {
@@ -272,5 +285,119 @@ body, html {
     font-size: 0.75rem;
     color: #6b7280;
     margin-top: 0.5rem;
+  } 
+
+  /* Chat Sidebar (right side) */
+.chat-sidebar {
+    width: 320px;
+    min-width: 320px;
+    height: calc(100vh - 120px - 4rem); /* height of screen minus navbar and padding */
+    background: white;
+    border-left: 1px solid #e5e7eb;
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    overflow-y: auto;
+  }
+  
+  .chat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  
+  .chat-header h4 {
+    margin: 0;
+    font-size: 1.1rem;
+  }
+  
+  .chat-header span {
+    font-size: 0.8rem;
+    color: #6b7280;
+  }
+  
+  .chat-header-icons {
+    display: flex;
+    gap: 0.5rem;
+  }
+  
+  .chat-header-icons button {
+    background: transparent;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+  }
+  
+  .chat-body {
+    flex: 1;
+    padding: 1rem 0;
+    overflow-y: auto;
+  }
+  
+  .assistant-message {
+    background: #f0fdf4;
+    padding: 1rem;
+    border-radius: 1rem;
+    font-size: 0.9rem;
+  }
+  
+  .assistant-name {
+    font-weight: bold;
+    color: #22c55e;
+    margin-bottom: 0.25rem;
+  }
+  
+  .message-text {
+    margin-bottom: 0.5rem;
+  }
+  
+  .timestamp {
+    font-size: 0.7rem;
+    color: #9ca3af;
+    text-align: right;
+  }
+  
+  .chat-input-area {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    color: black;
+  }
+  
+  .chat-textarea {
+    flex: 1;
+    min-height: 40px;
+    max-height: 200px; /* Optional: limit how tall it can grow */
+    resize: none;
+    padding: 0.5rem 1rem;
+    border: 1px solid #d1d5db;
+    border-radius: 9999px;
+    font-size: 0.9rem;
+    overflow-y: hidden; /* Hide ugly scrollbar */
+    line-height: 1.4;
+    transition: height 0.2s ease; /* smooth height change */
+  }
+  
+  
+  .send-btn {
+    background: #22c55e;
+    border: none;
+    color: white;
+    border-radius: 9999px;
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+    cursor: pointer;
+  }
+  
+  .chat-hint {
+    margin-top: 0.75rem;
+    font-size: 0.75rem;
+    color: #6b7280;
+    text-align: center;
   }
   
