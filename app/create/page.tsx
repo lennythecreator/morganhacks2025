@@ -4,7 +4,7 @@ import { useState, useRef } from 'react';
 import './create.css'; // Your custom styles
 import axios from 'axios';
 import ModelViewer from '../ModelViewer';
-
+import { useGLTF } from '@react-three/drei';
 export default function Create() {
   const [activeMode, setActiveMode] = useState('creative');
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -14,9 +14,12 @@ export default function Create() {
   const [messages, setMessages] = useState<{ role: 'user' | 'assistant'; content: string }[]>([]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
-  const [mannequin, setMannequin] = useState('')
+  const [mannequin, setMannequin] = useState('true')
+
+  const earth = useGLTF("/tripo_pbr_model_e2aa4f5c-ffdf-4821-938b-c495e2721c0c.glb");
 
   const handleButtonClick = () => {
+    
     if (fileInputRef.current) {
       fileInputRef.current.click();
     } else {
@@ -41,6 +44,8 @@ export default function Create() {
   const handleColorChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedColor(event.target.value);
   };
+
+ 
 
 
   function fakeAssistantReply(userInput: string): Promise<string> {
@@ -129,7 +134,7 @@ export default function Create() {
 
             <div className="mannequin">
               {
-                mannequin? <ModelViewer  model = {mannequin} />:null
+                mannequin? <ModelViewer  model = {earth} />:null
               }
 
             </div>
