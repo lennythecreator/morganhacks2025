@@ -1,17 +1,22 @@
 import uuid
-from flask import Flask, request,jsonify
+from flask import Flask, request, jsonify
 from connect import supabase
 from flask_cors import CORS
 from dotenv import load_dotenv
+import boto3
+from botocore.exceptions import ClientError
 import base64
 import os
 import openai
-from test_mannequin import create_task, poll_task_status, extract_model_url  # import functions from test.py
-from flask import request, jsonify
-from awss3 import S3Object
-from awss3 import S3Object
+import requests
+from test_mannequin import create_task, poll_task_status, extract_model_url
+
+load_dotenv()
+
 app = Flask(__name__)
-CORS(app)
+# Enable CORS properly for your frontend
+CORS(app, resources={r"/*": {"origins":"*"}})
+
 @app.route("/login", methods=["POST"])
 def login():
     print("Login route was hit!")
@@ -147,14 +152,56 @@ def generate_model():
         if not task_result:
             return jsonify({"error": "Failed to get task result"}), 500
 
-        # Extract model URL from the task result
-        model_url = extract_model_url(task_result)
+
+        model_url = extract_model_url(task_result)  # wherever the .glb is stored
+        print('ffailed right before if not model_url', model_url)
         if not model_url:
-            return jsonify({"error":"Model URL not found"}), 500
+            return jsonify({"error": "Model URL missing"}), 500
+
+        print("model url", model_url)
+        # 3. Download the .glb file
+        response = requests.get(model_url, stream=True)
+        print('this is our response', response)
+        if response.status_code != 200:
+            print('HEREEEEEEEEE')
+            return jsonify({"error": "Failed to download model"}), 500
+
+        # 5. Upload it to your S3 bucket
+        filename = task_id # you can name it anything
+        # Extract model URL from the task result
+        print('over here question mark?, ', filename, response.raw)
+        # Validate file type
+
+        s3Client = boto3.client('s3',
+            aws_access_key_id=os.getenv("AWS_ACCESS_KEY_ID"),
+            aws_secret_access_key=os.getenv("AWS_SECRET_ACCESS_KEY"),
+            region_name=os.getenv("AWS_DEFAULT_REGION"))
+        print('We got this far',os.getenv("AWS_ACCESS_KEY_ID") )
+        mimetype = "model/gltf-binary"
+        allowed_mimetypes = ['image/jpeg', 'image/png', 'image/gif', 'model/gltf-binary',
+            'application/octet-stream']
+        print('We got this far')
+        if mimetype not in allowed_mimetypes:
+            print('we crashed here')
+            raise ValueError(f"Unsupported file type: {mimetype}")
+        key = f"uploads/{task_id}"
+        print(os.getenv("AWS_S3_BUCKET"))
+        model_url = s3Client.upload_fileobj(response.raw,
+                                     os.getenv("AWS_S3_BUCKET"),
+                                     key,
+                                     ExtraArgs={'ACL': 'public-read', 'ContentType': mimetype})
+
+        file_url = f"https://{os.getenv("AWS_S3_BUCKET")}.s3.{os.getenv('AWS_REGION')}.amazonaws.com/{key}"
+        print('this is the file url', file_url)
+        # Extract model URL from the task result
+        # model_url = extract_model_url(task_result)
+        # if not model_url:
+        #     return jsonify({"error":"Model URL not found"}), 500
         
-        return jsonify({"model_url": model_url, 'message': 'It works if your receive this your image shows up '}), 201
+        return jsonify({"model_url": file_url, 'message': 'It works if your receive this your image shows up '}), 201
     except Exception as e:
-        return {"error": str(e)}, 500
+        print("S3 upload error:", str(e))
+        return {"error": f"S3 upload failed: {str(e)}"}, 500
 @app.route("/edit_image", methods=["POST"])
 def edit_image():
     data = request.get_json()
@@ -197,26 +244,26 @@ def upload_to_s3():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-    @app.route("/get-marketplace", methods=["GET"])
-    def get_marketplace():
-        """Endpoint to fetch designs from the database for the marketplace."""
-        try:
-            # Log the request details
-            print("Fetching marketplace designs...")
+@app.route("/get-marketplace", methods=["GET"])
+def get_marketplace():
+    """Endpoint to fetch designs from the database for the marketplace."""
+    try:
+        # Log the request details
+        print("Fetching marketplace designs...")
 
-            # Fetch designs along with category and user details
-            response = supabase.rpc("fetch_marketplace_designs").execute()
+        # Fetch designs along with category and user details
+        response = supabase.rpc("fetch_marketplace_designs").execute()
 
-            # Log the response data
-            print("Marketplace designs fetched:", response.data)
+        # Log the response data
+        print("Marketplace designs fetched:", response.data)
 
-            if response.data:
-                return jsonify({"status": "success", "data": response.data}), 200
-            else:
-                return jsonify({"status": "error", "message": "No designs found"}), 404
-        except Exception as e:
-            # Log the error
-            print("Error fetching marketplace designs:", str(e))
-            return jsonify({"status": "error", "message": str(e)}), 500
+        if response.data:
+            return jsonify({"status": "success", "data": response.data}), 200
+        else:
+            return jsonify({"status": "error", "message": "No designs found"}), 404
+    except Exception as e:
+        # Log the error
+        print("Error fetching marketplace designs:", str(e))
+        return jsonify({"status": "error", "message": str(e)}), 500
 if __name__ == "__main__":
     app.run(debug=True)

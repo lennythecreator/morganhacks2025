@@ -2,8 +2,8 @@ import boto3
 from botocore.exceptions import ClientError
 from dotenv import load_dotenv
 import os
+load_dotenv() 
 
-load_dotenv()
 
 class S3Object:
     def __init__(self):
@@ -14,9 +14,12 @@ class S3Object:
 
     def uploadToS3(self, file, key, mimetype):
         # Validate file type
+        print('We got this far')
         allowed_mimetypes = ['image/jpeg', 'image/png', 'image/gif', 'model/gltf-binary',
             'application/octet-stream']
+        print('We got this far')
         if mimetype not in allowed_mimetypes:
+            print('we crashed here')
             raise ValueError(f"Unsupported file type: {mimetype}")
 
         print(os.getenv("AWS_S3_BUCKET"))
@@ -28,4 +31,4 @@ class S3Object:
 
         return file_url
 
-s3 = S3Object()
+
