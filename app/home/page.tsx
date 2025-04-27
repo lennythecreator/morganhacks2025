@@ -8,7 +8,7 @@ export default function HomePage() {
   const [activeTab, setActiveTab] = useState("creative");
   const router = useRouter();
 
-  const handleNavigate = (e) => {
+  const handleNavigate = (e:any) => {
     e.preventDefault()
     router.push('/login');
   };

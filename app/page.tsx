@@ -1,10 +1,14 @@
 'use client';  
-import Image from "next/image";
+import Image from "next/image"; 
 
-import './home/home.css'
+import './create/home.css'; // Import your CSS file here
 import { useState} from "react";
 import { useRouter } from 'next/navigation';
 import ModelViewer from './ModelViewer';
+
+
+import {useGLTF } from '@react-three/drei';
+
 export default function Home() {
   const [activeTab, setActiveTab] = useState("creative");
     const router = useRouter();
@@ -13,6 +17,8 @@ export default function Home() {
       e.preventDefault()
       router.push('/login');
     };
+
+    const earth = useGLTF("tripo_pbr_model_f9c4224e-f097-4255-bb8d-517c4b307613.glb");
   
     return (
       <div className="homepage">
@@ -58,7 +64,7 @@ export default function Home() {
             </div>
             <div className="hero-image">
               <div className="interactive-preview">
-                <ModelViewer />
+              <ModelViewer model={earth} />
               </div>
             </div>
           </div>
@@ -89,7 +95,7 @@ export default function Home() {
           <div className="tab-content">
             {activeTab === "creative" ? (
               <div className="tab-panel">
-                <div className="image-placeholder">3D Model Placeholder</div>
+                <div className="image-placeholder"> <ModelViewer model={earth} /></div>
                 <div className="tab-text">
                   <h3>3D Design Generator</h3>
                   <ul>
@@ -102,7 +108,9 @@ export default function Home() {
               </div>
             ) : (
               <div className="tab-panel">
-                <div className="image-placeholder">Personalized Image Placeholder</div>
+                <div className="image-placeholder"><ModelViewer model={earth} />
+                
+                  </div>
                 <div className="tab-text">
                   <h3>Personalized Inspiration</h3>
                   <ul>
@@ -127,7 +135,7 @@ export default function Home() {
                 <div className="gallery-badge">
                   {index % 2 === 0 ? "AI Generated" : "3D Model"}
                 </div>
-                <div className="gallery-placeholder">Image</div>
+                <div className="gallery-placeholder"> <ModelViewer model={earth} /></div>
               </div>
             ))}
           </div>
