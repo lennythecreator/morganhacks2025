@@ -27,11 +27,37 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleSubmit = (event: FormEvent) => {
+  const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
-    console.log({ email, password });
-    alert('Login simulated. Check console for details.');
+  
+    try {
+      const response = await fetch('http://localhost:5000/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams({
+          email: email,
+          password: password,
+        }),
+      });
+  
+      const data = await response.json();
+      console.log(data);
+  
+      if (response.ok) {
+        alert('Login successful! 🎉');
+        // You can redirect to dashboard or homepage here
+        window.location.href = '/dashboard'; // example
+      } else {
+        alert(data.message || 'Login failed.');
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+      alert('An error occurred during login.');
+    }
   };
+  
 
   return (
     // Use class names intended for styling via login.css
