@@ -1,9 +1,8 @@
 'use client';
 
 import React, { useState, FormEvent } from 'react';
-import './login.css'; // <-- Make sure this import points to your login CSS file
+import './login.css'; 
 
-// --- Reusable Icon Components (Keep these or import from a shared location) ---
 const LeafIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" className="leaf-icon">
       <path d="M17 8C17 10.41 15.41 14.26 12 15.93 8.59 14.26 7 10.41 7 8C7 5.24 9.24 3 12 3S17 5.24 17 8M12 21.5C15.87 21.5 19.5 18.87 19.5 15V12H17V15C17 17.76 14.76 20 12 20S7 17.76 7 15V12H4.5V15C4.5 18.87 8.13 21.5 12 21.5Z" />
@@ -22,7 +21,6 @@ const EyeOffIcon = ({ ...props }) => (
     </svg>
 );
 // --- End Reusable Icons ---
-
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -87,6 +85,7 @@ export default function LoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="your.email@example.com"
+                suppressHydrationWarning 
                 required
               />
             </div>
