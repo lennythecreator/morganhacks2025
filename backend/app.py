@@ -8,6 +8,7 @@ import os
 import openai
 from test import create_task, poll_task_status, extract_model_url  # import functions from test.py
 from flask import request, jsonify
+from awss3 import S3Object
 app = Flask(__name__)
 CORS(app)
 s3 = S3Object()
@@ -182,3 +183,5 @@ def upload_to_s3():
         return jsonify({"error": str(e)}), 500
         
         
+if __name__ == '__main__':
+    app.run(debug=True)
