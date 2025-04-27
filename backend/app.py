@@ -6,8 +6,9 @@ from dotenv import load_dotenv
 import base64
 import os
 import openai
-from test import create_task, poll_task_status, extract_model_url  # import functions from test.py
+from test_mannequin import create_task, poll_task_status, extract_model_url  # import functions from test.py
 from flask import request, jsonify
+from awss3 import S3Object
 app = Flask(__name__)
 CORS(app)
 s3 = S3Object()
@@ -129,29 +130,44 @@ def generate_image():
 @app.route("/generate_model", methods=["POST"])
 def generate_model():
     data = request.get_json()
-    prompt = data.get("prompt","")
+    prompt = data.get("prompt", "")
 
     if not prompt:
         return {"error": "Prompt is required"}, 400
     try:
-        #create a task with the prompt for the model generation
-        task_data = {"prompt": prompt}
+        # Create a task with the prompt for the model generation
+        task_data = {"type": "text_to_model", "prompt": prompt}  # Specify task type
         task_id = create_task(task_data)
 
         if not task_id:
             return {"error": "Failed to create task"}, 500
 
-        #poll task status
+        # Poll task status
         task_result = poll_task_status(task_id)
         if not task_result:
             return jsonify({"error": "Failed to get task result"}), 500
 
-        #extract model url from the task result
+        # Extract model URL from the task result
         model_url = extract_model_url(task_result)
         if not model_url:
-            return jsonify({"error":"Model URL not found"}), 500
-        
+            return jsonify({"error": "Model URL not found"}), 500
+
         return jsonify({"model_url": model_url})
+    except Exception as e:
+        return {"error": str(e)}, 500
+@app.route("/edit_image", methods=["POST"])
+def edit_image():
+    data = request.get_json()
+    image_base64 = data.get("image_base64", "")
+    edits = data.get("edits", {})  # Details of the edits (e.g., crop, filter)
+
+    if not image_base64:
+        return {"error": "Image data is required"}, 400
+
+    try:
+        # Perform editing logic here (e.g., decode base64, apply edits, re-encode)
+        edited_image_base64 = perform_edits(image_base64, edits)
+        return jsonify({"edited_image_base64": edited_image_base64})
     except Exception as e:
         return {"error": str(e)}, 500
 
@@ -180,5 +196,27 @@ def upload_to_s3():
         return jsonify({"error": str(ve)}), 400
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-        
-        
+
+    @app.route("/get-marketplace", methods=["GET"])
+    def get_marketplace():
+        """Endpoint to fetch designs from the database for the marketplace."""
+        try:
+            # Log the request details
+            print("Fetching marketplace designs...")
+
+            # Fetch designs along with category and user details
+            response = supabase.rpc("fetch_marketplace_designs").execute()
+
+            # Log the response data
+            print("Marketplace designs fetched:", response.data)
+
+            if response.data:
+                return jsonify({"status": "success", "data": response.data}), 200
+            else:
+                return jsonify({"status": "error", "message": "No designs found"}), 404
+        except Exception as e:
+            # Log the error
+            print("Error fetching marketplace designs:", str(e))
+            return jsonify({"status": "error", "message": str(e)}), 500
+if __name__ == "__main__":
+    app.run(debug=True)

@@ -11,6 +11,7 @@ HEADERS = {
 
 def create_task(data):
     """Create a task and return the task ID."""
+    print("Creating task with data:", data)  # Debugging log
     response = requests.post(BASE_URL, headers=HEADERS, json=data)
     if response.status_code == 200:
         return response.json().get("data", {}).get("task_id")
@@ -19,6 +20,7 @@ def create_task(data):
 
 def poll_task_status(task_id, interval=2):
     """Poll task status until it is finalized and output is ready."""
+    print(f"Polling task status for task_id: {task_id}")  # Debugging log
     url = f"{BASE_URL}/{task_id}"
     while True:
         response = requests.get(url, headers=HEADERS)
