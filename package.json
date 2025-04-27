@@ -13,6 +13,7 @@
     "@radix-ui/react-label": "^2.1.4",
     "@react-three/drei": "^10.0.7",
     "@react-three/fiber": "^9.1.2",
+    "@swc/helpers": "^0.5.17",
     "autoprefixer": "^10.4.21",
     "classnames": "^2.5.1",
     "framer-motion": "^12.9.2",
@@ -22,6 +23,7 @@
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-router-dom": "^7.5.2",
+    "react-server-dom-webpack": "^19.1.0",
     "sass": "^1.87.0",
     "three": "^0.176.0"
   },
