@@ -1,0 +1,9 @@
+.upload-button{
+    background-color: green;
+    border: none;
+    border-radius: 0.5rem;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}

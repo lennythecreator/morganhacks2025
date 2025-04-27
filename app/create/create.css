@@ -1,0 +1,317 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Helvetica Neue', sans-serif;
+  }
+  
+  .design-page {
+    background: #f0fdf4;
+    min-height: 100vh;
+  }
+  
+  /* Navbar */
+  .design-navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background: white;
+    box-shadow: 0 1px 5px rgba(0,0,0,0.05);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  
+  .design-navbar-left {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
+  
+  .design-logo {
+    font-weight: bold;
+    font-size: 1.5rem;
+    color: #22c55e;
+  }
+  
+  .design-modes {
+    display: flex;
+    gap: 1rem;
+  }
+  
+  .mode-btn {
+    padding: 0.5rem 1rem;
+    border: none;
+    background: #f9fafb;
+    border-radius: 0.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    color:gray;
+  }
+  
+  .mode-btn.active {
+    background: white;
+    border: 2px solid #22c55e;
+    color: #22c55e;
+  }
+  
+  .design-navbar-right {
+    display: flex;
+    gap: 1rem;
+  }
+  
+  .navbar-btn {
+    background: white;
+    padding: 0.5rem 1rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    color:#22c55e;
+  }
+  
+  .export-btn {
+    background: #22c55e;
+    color: white;
+    padding: 0.5rem 1.25rem;
+    border-radius: 0.5rem;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  /* Eco badge */
+  .eco-badge {
+    position: absolute;
+    top: 5rem;
+    right: 2rem;
+    background: #d1fae5;
+    color: #047857;
+    padding: 0.4rem 0.8rem;
+    border-radius: 9999px;
+    font-size: 0.85rem;
+    font-weight: bold;
+  }
+  
+  /* Main */
+  .design-main {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 120px);
+    padding: 2rem;
+  }
+  
+  /* Left Tools */
+  .left-tools {
+    position: absolute;
+    top: 6rem;
+    left: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .tool-btn {
+    background: white;
+    border: 1px solid #d1d5db;
+    border-radius: 0.5rem;
+    padding: 0.8rem;
+    font-size: 1.5rem;
+    cursor: pointer;
+  }
+  
+  /* Mannequin */
+  .mannequin {
+    width: 300px;
+    height: 500px;
+    background: rgba(0,0,0,0.05);
+    border-radius: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    color: #9ca3af;
+  }
+  
+  /* Bottom controls */
+  .bottom-controls {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    border-radius: 2rem;
+    padding: 0.5rem 1rem;
+    display: flex;
+    gap: 1rem;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  }
+  
+  .bottom-controls button {
+    background: transparent;
+    border: none;
+    font-size: 1.25rem;
+    cursor: pointer;
+  }
+  
+  /* Right arrow */
+  .right-arrow {
+    position: absolute;
+    bottom: 2rem;
+    right: 2rem;
+    background: white;
+    border-radius: 9999px;
+    padding: 0.8rem;
+    font-size: 1.5rem;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  }
+  
+  /* Footer */
+  .footer-tag {
+    text-align: center;
+    font-size: 0.9rem;
+    color: #047857;
+    margin: 1rem 0;
+  }
+  
+  /* Personalize Mode */
+  .design-main.personalize {
+    background: #fff7ed;
+    justify-content: center;
+    padding: 2rem 4rem;
+  }
+  
+  .upload-box {
+    background: white;
+    border: 2px dashed #d1d5db;
+    border-radius: 1rem;
+    padding: 3rem;
+    text-align: center;
+    max-width: 500px;
+    width: 100%;
+    color:black
+  }
+  
+  .upload-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+  
+  .browse-btn {
+    background: #22c55e;
+    color: white;
+    padding: 0.75rem 2rem;
+    border: none;
+    border-radius: 0.5rem;
+    font-weight: bold;
+    margin-top: 1rem;
+    cursor: pointer;
+  }
+  
+  .chat-assistant {
+    background: white;
+    border-radius: 1rem;
+    width: 360px;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    position: fixed; /* Fixed position for responsiveness */
+    top: 5rem; /* Push it down to avoid overlapping with top-right buttons */
+    right: 1rem; /* Add some spacing from the right edge */
+    height: calc(100% - 6rem); /* Adjust height to leave space for buttons */
+    z-index: 10; /* Ensure it doesn't overlap other elements unnecessarily */
+    overflow: hidden; /* Prevent content overflow */
+}
+
+/* Media query for smaller screens */
+@media (max-width: 768px) {
+    .chat-assistant {
+        width: 100%; /* Full width for smaller screens */
+        height: 50%; /* Half height for smaller screens */
+        bottom: 0; /* Position it at the bottom */
+        top: auto; /* Override top positioning */
+        right: 0;
+        border-radius: 1rem 1rem 0 0; /* Rounded corners at the top */
+        padding: 1rem; /* Adjust padding for smaller screens */
+    }
+}
+  .chat-header {
+    border-bottom: 1px solid #d1d5db;
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .chat-subtitle {
+    color: #6b7280;
+    font-size: 0.85rem;
+  }
+  
+  .chat-messages {
+    flex: 1;
+    margin-bottom: 1rem;
+  }
+  
+  .chat-bubble {
+    background: #f0fdf4;
+    border-radius: 1rem;
+    padding: 1rem;
+    font-size: 0.9rem;
+    color:#6b7280;
+  }
+  
+  .timestamp {
+    margin-top: 0.5rem;
+    font-size: 0.7rem;
+    color: #9ca3af;
+  }
+  
+  .chat-input {
+    display: flex;
+    gap: -1px;
+    color:black;
+
+  }
+
+  .chat-textarea {
+    flex: 1;
+    min-height: 40px;
+    max-height: 200px; /* Optional: limit how tall it can grow */
+    resize: none;
+    margin-right: 8px;
+    padding: 0.5rem 1rem;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    overflow-y: hidden; /* Hide ugly scrollbar */
+    line-height: 1.4;
+    transition: height 0.2s ease; /* smooth height change */
+  }
+  
+  .chat-input input {
+    flex: 1;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid #d1d5db;
+    color:black
+  }
+  
+  .send-btn {
+    background: #22c55e;
+    border: none;
+    color: white;
+    padding: 0 1rem;
+    border-radius: 0.5rem;
+    font-size: 1.5rem;
+    cursor: pointer;
+  }
+  
+  .hint-text {
+    font-size: 0.75rem;
+    color: #6b7280;
+    margin-top: 0.5rem;
+  }
+  

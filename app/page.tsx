@@ -1,7 +1,7 @@
 'use client';  
-import Image from "next/image";
+import Image from "next/image"; 
 
-import './home/home.css'
+import './create/home.css'; // Import your CSS file here
 import { useState} from "react";
 import { useRouter } from 'next/navigation';
 import ModelViewer from './ModelViewer';

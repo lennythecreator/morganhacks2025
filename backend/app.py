@@ -11,8 +11,6 @@ from flask import request, jsonify
 from awss3 import S3Object
 app = Flask(__name__)
 CORS(app)
-s3 = S3Object()
-load_dotenv()
 @app.route("/login", methods=["POST"])
 def login():
     print("Login route was hit!")
@@ -81,9 +79,9 @@ def send_data():
     dummy_data = [
         {
             "id": 1,
-            "full_name": "John Doe",
+            "design_name": "John Doe",
             "description": "Loves sustainable design and architecture.",
-            "image_url": "https://randomuser.me/api/portraits/men/1.jpg"
+            "design_url": "https://randomuser.me/api/portraits/men/1.jpg"
         },
         {
             "id": 2,
