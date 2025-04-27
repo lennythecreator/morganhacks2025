@@ -12,6 +12,7 @@ HEADERS = {
 def create_task(data):
     """Create a task and return the task ID."""
     response = requests.post(BASE_URL, headers=HEADERS, json=data)
+    print(response)
     if response.status_code == 200:
         return response.json().get("data", {}).get("task_id")
     print(f"❌ Failed to create task. Status code: {response.status_code}, Response: {response.text}")

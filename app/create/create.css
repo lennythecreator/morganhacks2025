@@ -9,7 +9,6 @@ body, html {
     min-height: 100vh;
   }
   
-  /* Navbar */
   .design-navbar {
     display: flex;
     justify-content: space-between;
@@ -36,49 +35,69 @@ body, html {
   
   .design-modes {
     display: flex;
-    gap: 1rem;
+    gap: 0.5rem;
   }
   
+  /* Mode Buttons (Creative Mode / Personalize) */
   .mode-btn {
-    padding: 0.5rem 1rem;
-    border: none;
+    padding: 0.5rem 1.5rem;
     background: #f9fafb;
+    color: #6b7280;
+    font-weight: 600;
+    border: 1px solid #e5e7eb;
     border-radius: 0.5rem;
-    font-weight: bold;
     cursor: pointer;
-    color:gray;
+    transition: all 0.2s ease;
+    font-size: 0.95rem;
   }
   
   .mode-btn.active {
     background: white;
-    border: 2px solid #22c55e;
     color: #22c55e;
+    border: 2px solid #22c55e;
   }
   
+  /* Right Side Buttons */
   .design-navbar-right {
     display: flex;
-    gap: 1rem;
+    align-items: center;
+    gap: 0.5rem;
   }
   
-  .navbar-btn {
+  /* Save, Share */
+  .secondary-btn {
+    padding: 0.5rem 1.25rem;
     background: white;
-    padding: 0.5rem 1rem;
+    color: #22c55e;
     border: 1px solid #d1d5db;
     border-radius: 0.5rem;
-    font-weight: bold;
+    font-weight: 600;
+    font-size: 0.95rem;
     cursor: pointer;
-    color:#22c55e;
+    transition: all 0.2s ease;
   }
   
-  .export-btn {
+  /* Export */
+  .primary-btn {
+    padding: 0.5rem 1.5rem;
     background: #22c55e;
     color: white;
-    padding: 0.5rem 1.25rem;
-    border-radius: 0.5rem;
     border: none;
-    font-weight: bold;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    font-size: 0.95rem;
     cursor: pointer;
+    transition: all 0.2s ease;
   }
+  
+  .primary-btn:hover {
+    background: #16a34a;
+  }
+  
+  .secondary-btn:hover {
+    background: #f0fdf4;
+  }
+  
   
   /* Eco badge */
   .eco-badge {
@@ -219,13 +238,13 @@ body, html {
     flex-direction: column;
     padding: 1rem;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-    position: fixed; /* Fixed position for responsiveness */
-    top: 5rem; /* Push it down to avoid overlapping with top-right buttons */
-    right: 1rem; /* Add some spacing from the right edge */
-    height: calc(100% - 6rem); /* Adjust height to leave space for buttons */
-    z-index: 10; /* Ensure it doesn't overlap other elements unnecessarily */
-    overflow: hidden; /* Prevent content overflow */
-}
+    position: fixed;
+    top: 5rem;
+    right: 1rem;
+    height: calc(100% - 6rem);
+    z-index: 10;
+    overflow: hidden; /* Keep this */
+  }
 
 /* Media query for smaller screens */
 @media (max-width: 768px) {
@@ -239,10 +258,11 @@ body, html {
         padding: 1rem; /* Adjust padding for smaller screens */
     }
 }
-  .chat-header {
+.chat-header {
     border-bottom: 1px solid #d1d5db;
     padding-bottom: 0.5rem;
     margin-bottom: 0.5rem;
+    flex-shrink: 0;
   }
   
   .chat-subtitle {
@@ -252,7 +272,9 @@ body, html {
   
   .chat-messages {
     flex: 1;
-    margin-bottom: 1rem;
+    overflow-y: auto; /* <--- this is important */
+    padding-right: 0.5rem;
+    margin-bottom: 0.5rem;
   }
   
   .chat-bubble {
@@ -271,9 +293,9 @@ body, html {
   
   .chat-input {
     display: flex;
-    gap: -1px;
-    color:black;
-
+    gap: 8px;
+    flex-shrink: 0; /* <- Don't allow it to shrink */
+    margin-bottom: 0.5rem;
   }
 
   .chat-textarea {
@@ -281,6 +303,7 @@ body, html {
     min-height: 40px;
     max-height: 200px; /* Optional: limit how tall it can grow */
     resize: none;
+    color: black;
     margin-right: 8px;
     padding: 0.5rem 1rem;
     border: 1px solid #d1d5db;
@@ -309,8 +332,9 @@ body, html {
     cursor: pointer;
   }
   
-  .hint-text {
+  
+.hint-text {
     font-size: 0.75rem;
     color: #6b7280;
-    margin-top: 0.5rem;
+    flex-shrink: 0; /* <- Don't allow it to shrink */
   }

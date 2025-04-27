@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 import base64
 import os
 import openai
-from test import create_task, poll_task_status, extract_model_url  # import functions from test.py
+from testmannequin import create_task, poll_task_status, extract_model_url  # import functions from test.py
 from flask import request, jsonify
 from awss3 import S3Object
 app = Flask(__name__)
@@ -129,7 +129,7 @@ def generate_image():
 def generate_model():
     data = request.get_json()
     prompt = data.get("prompt","")
-
+    print('HELLO THIS IS THE PROMPT', prompt)
     if not prompt:
         return {"error": "Prompt is required"}, 400
     try:
@@ -139,6 +139,7 @@ def generate_model():
 
         if not task_id:
             return {"error": "Failed to create task"}, 500
+            print("we were here")
 
         #poll task status
         task_result = poll_task_status(task_id)
@@ -150,7 +151,7 @@ def generate_model():
         if not model_url:
             return jsonify({"error":"Model URL not found"}), 500
         
-        return jsonify({"model_url": model_url})
+        return jsonify({"model_url": model_url, 'message': 'It works if your receive this your image shows up '}), 201
     except Exception as e:
         return {"error": str(e)}, 500
 

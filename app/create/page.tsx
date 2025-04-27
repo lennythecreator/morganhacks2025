@@ -2,6 +2,8 @@
 
 import { useState, useRef } from 'react';
 import './create.css'; // Your custom styles
+import axios from 'axios';
+import ModelViewer from '../ModelViewer';
 
 export default function Create() {
   const [activeMode, setActiveMode] = useState('creative');
@@ -9,6 +11,10 @@ export default function Create() {
   const colorInputRef = useRef<HTMLInputElement>(null);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [selectedColor, setSelectedColor] = useState<string>('#ffffff'); // Default color white
+  const [messages, setMessages] = useState<{ role: 'user' | 'assistant'; content: string }[]>([]);
+  const [input, setInput] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [mannequin, setMannequin] = useState('')
 
   const handleButtonClick = () => {
     if (fileInputRef.current) {
@@ -36,34 +42,76 @@ export default function Create() {
     setSelectedColor(event.target.value);
   };
 
+
+  function fakeAssistantReply(userInput: string): Promise<string> {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(`Thanks for your message: "${userInput}"! 🌿 Here's a sustainable idea.`);
+      }, 1500); // simulate thinking for 1.5 seconds
+    });
+  }
+
+  
+  async function handleSend() {
+    if (!input.trim()) return; // No empty messages
+  
+    const userMessage = { role: 'user', content: input };
+    setMessages(prev => [...prev, userMessage]);
+    setInput('');
+    setLoading(true);
+  
+    try {
+       // Make Axios POST request to backend
+      const response = await axios.post('http://127.0.0.1:5000/generate_model', {
+        prompt: input
+      });
+
+      // Assuming your backend returns { reply: '...' }
+      const aiReply = response.data.message;
+      const mannequin_url = response.data.model_url
+  
+      const assistantMessage = { role: 'assistant', content: aiReply };
+      setMessages(prev => [...prev, assistantMessage]);
+      setMannequin(response.data.mannequin_url)
+    } catch (error) {
+      console.error('Error generating assistant reply:', error);
+      // Show error message if request fails
+      const assistantMessage = { role: 'assistant', content: "Oops! Failed to generate a reply." };
+      setMessages(prev => [...prev, assistantMessage]);
+    }
+  
+    setLoading(false);
+  }
   return (
     <div className="design-page">
       {/* Navbar */}
       <nav className="design-navbar">
-        <div className="design-navbar-left">
-          <div className="design-logo">EcoFit 3D</div>
-          <div className="design-modes">
-            <button
-              className={activeMode === 'creative' ? 'mode-btn active' : 'mode-btn'}
-              onClick={() => setActiveMode('creative')}
-            >
-              ✨ Creative Mode
-            </button>
-            <button
-              className={activeMode === 'personalize' ? 'mode-btn active' : 'mode-btn'}
-              onClick={() => setActiveMode('personalize')}
-            >
-              🖼️ Personalize
-            </button>
+          <div className="design-navbar-left">
+            <div className="design-logo">EcoFit 3D</div>
+            <div className="design-modes">
+              <button
+                className={`mode-btn ${activeMode === 'creative' ? 'active' : ''}`}
+                onClick={() => setActiveMode('creative')}
+              >
+                ✨ Creative Mode
+              </button>
+              <button
+                className={`mode-btn ${activeMode === 'personalize' ? 'active' : ''}`}
+                onClick={() => setActiveMode('personalize')}
+              >
+                🖼️ Personalize
+              </button>
+            </div>
           </div>
-        </div>
 
-        <div className="design-navbar-right">
-          <button className="navbar-btn">Save</button>
-          <button className="navbar-btn">Share</button>
-          <button className="export-btn">Export</button>
-        </div>
+          <div className="design-navbar-right">
+            <button className="secondary-btn">Save</button>
+            <button className="secondary-btn">Share</button>
+            <button className="primary-btn">Export</button>
+          </div>
       </nav>
+
+
 
       {/* Eco Badge */}
       <div className="eco-badge">🌿 Eco-friendly materials</div>
@@ -79,7 +127,12 @@ export default function Create() {
               <button className="tool-btn">👖</button>
             </div>
 
-            <div className="mannequin">Mannequin / 3D Model Placeholder</div>
+            <div className="mannequin">
+              {
+                mannequin? <ModelViewer  model = {mannequin} />:null
+              }
+
+            </div>
 
             <div className="bottom-controls">
               <button>↶</button>
@@ -194,36 +247,65 @@ export default function Create() {
           </>
         )}
 
-            <aside className="chat-assistant">
-              <div className="chat-header">
-                <h4>Design Assistant</h4>
-                <p className="chat-subtitle">AI-powered guidance</p>
-              </div>
+        <aside className="chat-assistant">
+          {/* Chat Header */}
+          <div className="chat-header">
+            <h4>Design Assistant</h4>
+            <p className="chat-subtitle">AI-powered guidance</p>
+          </div>
 
-              <div className="chat-messages">
-                <div className="chat-bubble">
-                  <strong>EcoFit Assistant</strong><br />
-                  Welcome to Personalize Mode! Upload inspiration images or describe your vision, and I'll generate custom sustainable designs for you.
-                  <div className="timestamp">02:33 AM</div>
+          {/* Chat Messages Scrollable Area */}
+          <div className="chat-messages">
+            {messages.map((m, index) => (
+              <div key={index} className="chat-bubble">
+                <strong>{m.role === 'user' ? 'You' : 'EcoFit Assistant'}</strong><br />
+                {m.content}
+                <div className="timestamp">
+                  {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                 </div>
               </div>
+            ))}
 
-              <div className="chat-input">
-                <textarea
+            {loading && (
+              <div className="chat-bubble">
+                <strong>EcoFit Assistant</strong><br />
+                Typing...
+                <div className="timestamp">
+                  {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Chat Input Area */}
+          <div className="chat-input">
+            <textarea
               placeholder="Ask about your personalized design..."
               rows={1}
               className="chat-textarea"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
               onInput={(e) => {
-                e.currentTarget.style.height = 'auto';  // Reset the height
-                e.currentTarget.style.height = `${e.currentTarget.scrollHeight}px`; // Set it to the scroll height
-                      }}
-                    />
-                        <button className="send-btn">➤</button>
-                      </div>
+                e.currentTarget.style.height = 'auto';  
+                e.currentTarget.style.height = `${e.currentTarget.scrollHeight}px`; 
+              }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                  e.preventDefault();
+                  handleSend();
+                }
+              }}
+            />
+            <button className="send-btn" onClick={handleSend}>➤</button>
+          </div>
 
-                      <p className="hint-text">Try: "Generate a sustainable dress inspired by forest patterns"</p>
-                    </aside>
-              </main>
+          {/* Hint Text */}
+          <p className="hint-text">
+            Try: "Generate a sustainable dress inspired by forest patterns"
+          </p>
+        </aside>
+
+          </main>
 
       {/* Footer */}
       <footer className="footer-tag">
