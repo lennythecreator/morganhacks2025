@@ -1,0 +1,242 @@
+/* src/app/styles.css */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap'); /* Example font */
+
+/* Basic Reset & Body Styling */
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif; /* Use a suitable font */
+  background-color: #f7fafc; /* Light gray background */
+  color: #4a5568; /* Default text color */
+  line-height: 1.5;
+}
+
+/* Page Container */
+.signup-page-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Header Styling */
+.signup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem; /* Adjust padding as needed */
+  background-color: #e6fffa; /* Very light teal/green background */
+  border-bottom: 1px solid #b2f5ea; /* Slightly darker border */
+}
+
+.signup-header .logo {
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+  font-size: 1.2rem;
+  color: #2c7a7b; /* Teal color for logo text */
+}
+
+.signup-header .logo .leaf-icon {
+  margin-right: 0.5rem;
+  color: #38a169; /* Green color for icon */
+  width: 28px;  /* Adjust icon size */
+  height: 28px; /* Adjust icon size */
+}
+
+.signup-header .back-link {
+  color: #4a5568;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.signup-header .back-link:hover {
+  text-decoration: underline;
+}
+
+/* Main Content Area */
+.signup-main {
+  flex-grow: 1; /* Allows main to take up remaining vertical space */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem; /* Padding around the form container */
+  background: linear-gradient(to bottom right, #f0fff4, #e6fffa); /* Subtle gradient background */
+}
+
+/* Form Container Styling */
+.signup-form-container {
+  background-color: #ffffff;
+  padding: 2.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  max-width: 450px; /* Max width of the form box */
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form-logo {
+  margin-bottom: 1rem;
+  color: #38a169; /* Green color for icon */
+}
+.form-logo .leaf-icon {
+    width: 32px;
+    height: 32px;
+}
+
+
+.signup-form-container h1 {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #2d3748; /* Darker heading color */
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+}
+
+.signup-form-container .subtitle {
+  font-size: 1rem;
+  color: #718096; /* Grayer subtitle color */
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+/* Form Styling */
+.signup-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group {
+  margin-bottom: 1.25rem; /* Space between form groups */
+}
+
+.form-group label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+  color: #4a5568;
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="password"] {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid #cbd5e0; /* Gray border */
+  border-radius: 6px;
+  font-size: 1rem;
+  box-sizing: border-box; /* Include padding and border in element's total width/height */
+}
+
+.form-group input::placeholder {
+    color: #a0aec0; /* Lighter placeholder text */
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #4fd1c5; /* Teal border on focus */
+    box-shadow: 0 0 0 2px rgba(79, 209, 197, 0.3); /* Subtle glow on focus */
+}
+
+
+/* Password Specific */
+.password-group {
+    position: relative;
+}
+.password-group input[type="password"],
+.password-group input[type="text"] { /* Ensure text type also gets padding adjustment */
+    padding-right: 3rem; /* Make space for the icon */
+}
+
+.password-toggle-icon {
+    position: absolute;
+    top: 38px; /* Adjust based on input height and label */
+    right: 1rem;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+    color: #718096; /* Icon color */
+}
+
+.input-hint {
+    font-size: 0.75rem;
+    color: #718096;
+    margin-top: 0.4rem;
+}
+
+
+/* Checkbox Group */
+.checkbox-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem; /* More space before button */
+}
+
+.checkbox-group input[type="checkbox"] {
+  margin-right: 0.75rem;
+  width: 16px;
+  height: 16px;
+  accent-color: #38a169; /* Green checkbox color */
+}
+
+.checkbox-group label {
+  margin-bottom: 0; /* Override default block label margin */
+  font-size: 0.875rem;
+  font-weight: 400;
+}
+
+.checkbox-group label a {
+  color: #38a169; /* Green link color */
+  text-decoration: none;
+}
+
+.checkbox-group label a:hover {
+  text-decoration: underline;
+}
+
+/* Submit Button */
+.submit-button {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border: none;
+  border-radius: 6px;
+  background-image: linear-gradient(to right, #38a169, #319795); /* Green to Teal gradient */
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-image 0.3s ease, box-shadow 0.3s ease;
+}
+
+.submit-button:hover {
+  background-image: linear-gradient(to right, #2f855a, #2c7a7b); /* Darker gradient on hover */
+   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Sign-in Link & Footer Text */
+.signin-link,
+.footer-text {
+  text-align: center;
+  font-size: 0.875rem;
+  margin-top: 1.5rem;
+  color: #718096;
+}
+
+.signin-link a {
+  color: #38a169; /* Green link color */
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.signin-link a:hover {
+  text-decoration: underline;
+}
+
+.footer-text {
+    margin-top: 1rem;
+    font-size: 0.8rem;
+    font-style: italic;
+}
