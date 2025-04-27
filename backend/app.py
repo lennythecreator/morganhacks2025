@@ -2,7 +2,13 @@ import uuid
 from flask import Flask, request,jsonify
 from connect import supabase
 from flask_cors import CORS
-
+from dotenv import load_dotenv
+import base64
+import os
+import openai
+from test import create_task, poll_task_status, extract_model_url  # import functions from test.py
+from flask import request, jsonify
+from awss3 import S3Object
 app = Flask(__name__)
 CORS(app)
 @app.route("/login", methods=["POST"])
@@ -96,3 +102,86 @@ def send_data():
         "data": dummy_data
     })
 
+
+
+@app.route("/gerenate_image", methods=["POST"])
+def generate_image():
+    data = request.get_json()
+    prompt = data.get("prompt", "")
+    references = data.get("references", [])  # Get references from the request
+
+    if not prompt:
+        return {"error": "Prompt is required"}, 400
+
+    try:
+        # Include references in the generation process if provided
+        result = client.images.generate(
+            model="gpt-image-1",
+            prompt=prompt,
+            references=references  # Pass references to the model
+        )
+        image_base64 = result.data[0].b64_json
+        return jsonify({"image_base64": image_base64})
+    except Exception as e:
+        return {"error": str(e)}, 500
+
+@app.route("/generate_model", methods=["POST"])
+def generate_model():
+    data = request.get_json()
+    prompt = data.get("prompt","")
+
+    if not prompt:
+        return {"error": "Prompt is required"}, 400
+    try:
+        #create a task with the prompt for the model generation
+        task_data = {"prompt": prompt}
+        task_id = create_task(task_data)
+
+        if not task_id:
+            return {"error": "Failed to create task"}, 500
+
+        #poll task status
+        task_result = poll_task_status(task_id)
+        if not task_result:
+            return jsonify({"error": "Failed to get task result"}), 500
+
+        #extract model url from the task result
+        model_url = extract_model_url(task_result)
+        if not model_url:
+            return jsonify({"error":"Model URL not found"}), 500
+        
+        return jsonify({"model_url": model_url})
+    except Exception as e:
+        return {"error": str(e)}, 500
+
+@app.route("/upload-to-s3", methods=["POST"])
+def upload_to_s3():
+    """Endpoint to upload files (images or models) to S3."""
+    if 'file' not in request.files:
+        return jsonify({"error": "No file part in the request"}), 400
+
+    file = request.files['file']
+    if file.filename == '':
+        return jsonify({"error": "No file selected for uploading"}), 400
+
+    # Get additional metadata from the request
+    file_type = request.form.get("type", "unknown")  # e.g., "model" or "image"
+    mimetype = file.mimetype
+
+    # Generate a unique key for the file in S3
+    key = f"{file_type}/{file.filename}"
+
+    try:
+        # Upload the file to S3
+        file_url = s3.uploadToS3(file, key, mimetype)
+        return jsonify({"message": "File uploaded successfully", "file_url": file_url}), 200
+    except ValueError as ve:
+        return jsonify({"error": str(ve)}), 400
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+  
+        
+if __name__ == '__main__':
+    app.run(debug=True)
+
+        
