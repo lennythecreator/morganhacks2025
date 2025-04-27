@@ -1,0 +1,229 @@
+/* src/app/login/login.css */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap'); /* Example font */
+
+/* Basic Reset & Body Styling */
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif; /* Use a suitable font */
+  background-color: #f7fafc; /* Light gray background */
+  color: #4a5568; /* Default text color */
+  line-height: 1.5;
+}
+
+/* Page Container */
+.login-page-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Header Styling */
+.login-header {
+  display: flex;
+  justify-content: space-between; /* Although only left item exists, keeps structure */
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: #e6fffa; /* Very light teal/green background */
+  border-bottom: 1px solid #b2f5ea;
+}
+
+.login-header .logo {
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+  font-size: 1.2rem;
+  color: #2c7a7b;
+}
+
+.login-header .logo .leaf-icon {
+  margin-right: 0.5rem;
+  color: #38a169;
+  width: 28px;
+  height: 28px;
+}
+
+/* Main Content Area */
+.login-main {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  background: linear-gradient(to bottom right, #f0fff4, #e6fffa);
+}
+
+/* Form Container Styling */
+.login-form-container {
+  background-color: #ffffff;
+  padding: 2.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  max-width: 450px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form-logo {
+  margin-bottom: 1rem;
+  color: #38a169;
+}
+.form-logo .leaf-icon {
+    width: 32px;
+    height: 32px;
+}
+
+.login-form-container h1 {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #2d3748;
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+
+.login-form-container .subtitle {
+  font-size: 1rem;
+  color: #718096;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+/* Form Styling */
+.login-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group {
+  margin-bottom: 1.25rem;
+}
+
+.form-group label {
+  display: block; /* Needed for password-label-group */
+  font-weight: 500;
+  font-size: 0.875rem;
+  color: #4a5568;
+}
+
+.form-group input[type="email"],
+.form-group input[type="password"],
+.form-group input[type="text"] { /* Added text type for password visibility */
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid #cbd5e0;
+  border-radius: 6px;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+.form-group input::placeholder {
+    color: #a0aec0;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #4fd1c5;
+    box-shadow: 0 0 0 2px rgba(79, 209, 197, 0.3);
+}
+
+/* Password Specific */
+.password-group {
+    position: relative;
+}
+.password-group input[type="password"],
+.password-group input[type="text"] { /* Ensure text type also gets padding adjustment */
+    padding-right: 3rem; /* Make space for the icon */
+}
+
+.password-label-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    width: 100%;
+    margin-bottom: 0.5rem; /* Space between label group and input */
+}
+.password-label-group label {
+    margin-bottom: 0; /* Override default label margin */
+}
+
+.forgot-password-link {
+    font-size: 0.8rem;
+    color: #38a169;
+    text-decoration: none;
+}
+.forgot-password-link:hover {
+    text-decoration: underline;
+}
+
+
+.password-toggle-icon {
+    position: absolute;
+    /* Needs careful adjustment based on final input height and label group */
+    top: 46px; /* Start adjustment from here */
+    right: 1rem;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+    color: #718096;
+}
+
+/* Submit Button */
+.submit-button {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border: none;
+  border-radius: 6px;
+  background-image: linear-gradient(to right, #38a169, #319795);
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-image 0.3s ease, box-shadow 0.3s ease;
+  margin-top: 0.5rem; /* Add some space above the button */
+}
+
+.submit-button:hover {
+  background-image: linear-gradient(to right, #2f855a, #2c7a7b);
+   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Sign-up Link (Below form container) */
+.signup-link {
+    text-align: center;
+    font-size: 0.875rem;
+    margin-top: 1.5rem;
+    color: #718096;
+}
+
+.signup-link a {
+    color: #38a169;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.signup-link a:hover {
+    text-decoration: underline;
+}
+
+/* Footer Text (Inside form container) */
+.footer-text {
+    text-align: center;
+    font-size: 0.8rem;
+    font-style: italic;
+    margin-top: 1rem;
+    color: #718096;
+}
+
+
+/* Page Footer (Absolute bottom) */
+.page-footer {
+    text-align: center;
+    padding: 1.5rem;
+    font-size: 0.8rem;
+    color: #a0aec0;
+    background-color: transparent; /* Or match main page background */
+}
