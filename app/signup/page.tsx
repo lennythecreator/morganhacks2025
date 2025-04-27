@@ -32,17 +32,40 @@ export default function SignUpPage() {
   const [agreedToTerms, setAgreedToTerms] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleSubmit = (event: FormEvent) => {
+  const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
-    // Handle form submission logic here
-    console.log({
-      fullName,
-      email,
-      password,
-      agreedToTerms,
-    });
-    alert('Account creation simulated. Check console for details.');
+  
+    try {
+      const response = await fetch('http://localhost:5000/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded', 
+        },
+        body: new URLSearchParams({
+          full_name: fullName,   // or fullName if you want to use the full name
+          password: password,
+          email: email,         // optional — only if your backend expects it
+        }),
+      });
+  
+      const data = await response.json();
+      console.log(data);
+  
+      if (response.ok) {
+        console.log(`User signed up with full_name: ${fullName}`);
+        alert('Signup successful! 🎉');
+        
+        // Optional: Redirect to main page after signup
+        window.location.href = '/';
+      } else {
+        alert(data.message || 'Signup failed.');
+      }
+    } catch (error) {
+      console.error('Signup error:', error);
+      alert('An error occurred during signup.');
+    }
   };
+  
 
   return (
     <div className="signup-page-container">
@@ -85,7 +108,6 @@ export default function SignUpPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="your.email@example.com"
                 required
-                suppressHydrationWarning 
               />
             </div>
 
