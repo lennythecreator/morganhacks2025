@@ -14,7 +14,8 @@ class S3Object:
 
     def uploadToS3(self, file, key, mimetype):
         # Validate file type
-        allowed_mimetypes = ['image/jpeg', 'image/png', 'image/gif', 'model/gltf-binary']
+        allowed_mimetypes = ['image/jpeg', 'image/png', 'image/gif', 'model/gltf-binary',
+            'application/octet-stream']
         if mimetype not in allowed_mimetypes:
             raise ValueError(f"Unsupported file type: {mimetype}")
 
