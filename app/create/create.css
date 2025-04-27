@@ -31,6 +31,7 @@ body, html {
   .design-logo {
     font-weight: bold;
     font-size: 1.5rem;
+    color: #22c55e;
   }
   
   .design-modes {
@@ -45,6 +46,7 @@ body, html {
     border-radius: 0.5rem;
     font-weight: bold;
     cursor: pointer;
+    color:gray;
   }
   
   .mode-btn.active {
@@ -65,6 +67,7 @@ body, html {
     border-radius: 0.5rem;
     font-weight: bold;
     cursor: pointer;
+    color:#22c55e;
   }
   
   .export-btn {
@@ -177,7 +180,7 @@ body, html {
   /* Personalize Mode */
   .design-main.personalize {
     background: #fff7ed;
-    justify-content: space-between;
+    justify-content: center;
     padding: 2rem 4rem;
   }
   
@@ -189,6 +192,7 @@ body, html {
     text-align: center;
     max-width: 500px;
     width: 100%;
+    color:black
   }
   
   .upload-icon {
@@ -210,13 +214,31 @@ body, html {
   .chat-assistant {
     background: white;
     border-radius: 1rem;
-    width: 300px;
+    width: 360px;
     display: flex;
     flex-direction: column;
     padding: 1rem;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-  }
-  
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    position: fixed; /* Fixed position for responsiveness */
+    top: 5rem; /* Push it down to avoid overlapping with top-right buttons */
+    right: 1rem; /* Add some spacing from the right edge */
+    height: calc(100% - 6rem); /* Adjust height to leave space for buttons */
+    z-index: 10; /* Ensure it doesn't overlap other elements unnecessarily */
+    overflow: hidden; /* Prevent content overflow */
+}
+
+/* Media query for smaller screens */
+@media (max-width: 768px) {
+    .chat-assistant {
+        width: 100%; /* Full width for smaller screens */
+        height: 50%; /* Half height for smaller screens */
+        bottom: 0; /* Position it at the bottom */
+        top: auto; /* Override top positioning */
+        right: 0;
+        border-radius: 1rem 1rem 0 0; /* Rounded corners at the top */
+        padding: 1rem; /* Adjust padding for smaller screens */
+    }
+}
   .chat-header {
     border-bottom: 1px solid #d1d5db;
     padding-bottom: 0.5rem;
@@ -238,6 +260,7 @@ body, html {
     border-radius: 1rem;
     padding: 1rem;
     font-size: 0.9rem;
+    color:#6b7280;
   }
   
   .timestamp {
@@ -248,7 +271,24 @@ body, html {
   
   .chat-input {
     display: flex;
-    gap: 0.5rem;
+    gap: -1px;
+    color:black;
+
+  }
+
+  .chat-textarea {
+    flex: 1;
+    min-height: 40px;
+    max-height: 200px; /* Optional: limit how tall it can grow */
+    resize: none;
+    margin-right: 8px;
+    padding: 0.5rem 1rem;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    overflow-y: hidden; /* Hide ugly scrollbar */
+    line-height: 1.4;
+    transition: height 0.2s ease; /* smooth height change */
   }
   
   .chat-input input {
@@ -256,6 +296,7 @@ body, html {
     padding: 0.5rem 1rem;
     border-radius: 0.5rem;
     border: 1px solid #d1d5db;
+    color:black
   }
   
   .send-btn {
