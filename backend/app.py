@@ -8,8 +8,11 @@ import os
 import openai
 from test import create_task, poll_task_status, extract_model_url  # import functions from test.py
 from flask import request, jsonify
+from awss3 import S3Object
 app = Flask(__name__)
 CORS(app)
+s3 = S3Object()
+load_dotenv()
 @app.route("/login", methods=["POST"])
 def login():
     print("Login route was hit!")
@@ -152,5 +155,33 @@ def generate_model():
         return jsonify({"model_url": model_url})
     except Exception as e:
         return {"error": str(e)}, 500
+
+@app.route("/upload-to-s3", methods=["POST"])
+def upload_to_s3():
+    """Endpoint to upload files (images or models) to S3."""
+    if 'file' not in request.files:
+        return jsonify({"error": "No file part in the request"}), 400
+
+    file = request.files['file']
+    if file.filename == '':
+        return jsonify({"error": "No file selected for uploading"}), 400
+
+    # Get additional metadata from the request
+    file_type = request.form.get("type", "unknown")  # e.g., "model" or "image"
+    mimetype = file.mimetype
+
+    # Generate a unique key for the file in S3
+    key = f"{file_type}/{file.filename}"
+
+    try:
+        # Upload the file to S3
+        file_url = s3.uploadToS3(file, key, mimetype)
+        return jsonify({"message": "File uploaded successfully", "file_url": file_url}), 200
+    except ValueError as ve:
+        return jsonify({"error": str(ve)}), 400
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
         
         
+if __name__ == '__main__':
+    app.run(debug=True)
